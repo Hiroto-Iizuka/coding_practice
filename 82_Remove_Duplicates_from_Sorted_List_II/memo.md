@@ -34,3 +34,10 @@ class Solution:
 - 変数名をかえた
   - `dummy`はなんのことかわからないので`sentinel`とした
   - `last_fixed_node`も文脈的に把握しづらい気がした
+
+## Step3
+
+- 3回連続で解答できるようになる過程で、prev_nodeという変数名がよくないことに気づいた
+  - 生成AIにも聞いたが、「最後に保持されたnode」という意味で`last_kept`や挿入位置 `insertion_point`という案が出た
+  - もっと明示的にしたい。「どこまで削除するか」という命名で `delete_point` がよいかもしれない
+- 最終的な結果を作るための `node`、どこまで削除するかを管理する `delete_point` 
