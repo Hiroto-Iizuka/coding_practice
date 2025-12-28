@@ -7,7 +7,7 @@ class Solution:
             stack.append(node)
             node = node.next
 
-        reverse_node = sentinel = ListNode(next=node)
+        reverse_node = sentinel = ListNode()
         while stack:
             popped_node = stack.pop()
             reverse_node.next = popped_node
