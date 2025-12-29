@@ -41,3 +41,8 @@ class Solution:
 - `visited` は `seen` とかでもいいのか、今回の問題だと好みかな
 
 ## Step 3
+
+- 141のときと同じ感想
+- current, curだと文脈的に把握しづらいとわかってきた（意味合いが広すぎるため）
+- whileの条件: `while node:`だと`None, boolのfalse, 0, "", []`など意味合いが広く思わぬ挙動になる可能性がある
+  - `while is not None:`とすることで条件が限定的・明確になる
