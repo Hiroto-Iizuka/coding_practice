@@ -7,8 +7,5 @@ class Solution:
         for num in nums:
             freq_dic[num] += 1
         
-        freq_ranking = sorted(freq_dic.items(), key=lambda x: x[1], reverse=True)
-        result = []
-        for i in range(k):
-            result.append(freq_ranking[i][0])
-        return result
+        freq_ranking = sorted(freq_dic, key=freq_dic.get, reverse=True)
+        return freq_ranking[:k]

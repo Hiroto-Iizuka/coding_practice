@@ -111,6 +111,9 @@ class Solution:
 ```
 
 - https://docs.python.org/3.11/library/collections.html#collections.Counter.most_common を使えばすぐできそうだけど、問題の意図ではないと思った
+
+## Step2
+
   - [ここ](https://github.com/mamo3gr/arai60/pull/9/files)で調べていただいているので中身だけ見ておく
   - シンプル&速い 3ms
 
@@ -135,4 +138,22 @@ if heapq is None:
     import heapq
 
 return heapq.nlargest(n, self.items(), key=_itemgetter(1))
+```
+
+- 自分の回答と似ているけど、sortのkeyが異なる解法
+  - `数値: 頻度`をtuple化して頻度で並び替えたけど、tuple化せずにdictのままできるのか、イイ
+  - しかも速い、4ms
+
+```py
+from collections import defaultdict
+
+
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        num_count = defaultdict(int)
+        for n in nums:
+            num_count[n] += 1
+
+        nums_frequent_order = sorted(num_count, key=num_count.get, reverse=True)
+        return nums_frequent_order[:k]
 ```
