@@ -24,4 +24,4 @@ class Solution:
 
 - `target - num`の変数名`complement`もいいかも
 - dictの命名`num_to_index`としている人が多そう。
-  - 
+  - たしかにこっちのほうがよさそう（意味がそのまま通る） 
