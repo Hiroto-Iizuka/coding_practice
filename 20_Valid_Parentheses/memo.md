@@ -63,3 +63,11 @@ class Solution:
   - https://github.com/komdoroid/arai60/pull/12/files#r2630417643
 - 他の人のコード
   - 割とifネストを許容している人が多い？
+
+## Step3
+
+- いくつか指摘をいただいた箇所を修正
+  - BRACKET_PAIRSを定数に変更
+  - stack用の配列の命名を`open_bracket_stack`として、何が入るか・何に使うのかをわかりやすくした
+  - `char`は言語によって予約語の可能性があるため`ch`とした
+  - `BRACKET_PAIRS[stack.pop()]`は条件式内での副作用や認知負荷の高さから、early returnで一行ずつに処理を分けることにした
