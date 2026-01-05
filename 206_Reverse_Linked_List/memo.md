@@ -71,3 +71,18 @@ class Solution:
             original_node = original_node.next
         return reverse_head
 ```
+
+## Step3
+
+- stackを使わない方法
+    - だいぶシンプルになる
+
+```py
+class Solution:
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        reversed_head = None
+        while head is not None:
+            reversed_head = ListNode(head.val, reversed_head)
+            head = head.next
+        return reversed_head
+```
