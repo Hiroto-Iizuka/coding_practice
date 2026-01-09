@@ -1,8 +1,9 @@
-## Step1 & Step2
+## Step1
 
 - Two Sumに似ているような気がする
 - 部分配列：元の配列から連続した要素を取り出して作られるより小さい配列
 - numsは昇順になっているのだろうか？
+  - 累積和というアルゴリズムを知ってこれは関係ないとわかった
 - と、考えても解法を全然思いつけないので答えを見る
 - 累積和を使う
 
@@ -32,8 +33,7 @@ class Solution:
   - なにがわからないかを考えてみる
     - `if total - k in cumsum_to_freq:`によってなにができるのかがわかっていない
       - 「過去に total - k という累積和が存在したか？」を確認している
-      - それでも少し理解が辛いが、少しこの問題がキツいので先に進める
-
+    - 累積和と頻度という結びつきが直感的に理解できないのかも
 ```py
 class Solution:
     def subarraySum(self, nums: List[int], k: int) -> int:
@@ -50,3 +50,32 @@ class Solution:
 
         return count
 ```
+
+### 累積和（Prefix Sum）
+
+- `[a, b, c, d]` -> `[0, a, a+b, a+b+c, a+b+c+d]`
+  - これを記録しておくことで任意の区間での和をO(1)で計算できる
+  - `nums[i] - nums[j + 1]`で i番目からj番目までの和を求めることができる
+
+## Step2
+
+- わからない点を明確にして、生成AIにつくってもらった上で少し変数名を変更した
+- だいぶ何をやっているかがわかりやすくなったと思う
+
+```py
+class Solution:
+    def subarraySum(self, nums: List[int], k: int) -> int:
+        prefix_sum_to_count = defaultdict(int)
+        prefix_sum_to_count[0] = 1
+
+        prefix_sum = 0
+        answer = 0
+
+        for num in nums:
+            prefix_sum += num
+            answer += prefix_sum_to_count[prefix_sum - k]
+            prefix_sum_to_count[prefix_sum] += 1
+
+        return answer
+```
+
