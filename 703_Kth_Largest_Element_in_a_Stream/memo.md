@@ -111,3 +111,55 @@ class KthLargest:
   - `nums`のままはわかりづらいから`top_k_values`という名前にしているみたい
     - heap理解の途中でk番目までの値を入れておくところと理解したので`top_k_values`はよさそう。
     
+## Step3
+
+- 前に進めることを優先して2週間置いちゃったけど失敗。なぜこう書いたのか、どういう問題だったのか全然思い出せない。。
+- コメントをいただいた内容を整理する
+- `while len(self.top_k_values) > self.k:`は`len(nums)`がkよりもかなり大きい時、計算量で不利になる
+  - `len(nums)>k`になるまでheappopで1つずつ取り出すため
+- `if len(self.heap) > self.k:`を1つに書き換えてみる
+- https://github.com/mamo3gr/arai60/pull/8/files#diff-b8e64c318a6b5e40aba6edf4197cecfbe0b3849969675008085b46a2ab3aee21 を採用した
+  - initの時点で addを使ってヒープ構造を実現している
+  - `while len(self.top_k_ascending) > self.k`の条件式も1つにすることができているのでDRYも実現
+
+```py
+import heapq
+
+
+class KthLargest:
+
+    def __init__(self, k: int, nums: List[int]):
+        self.k = k
+        self.top_k_ascending = []
+        for n in nums:
+            self.add(n)
+
+    def add(self, val: int) -> int:
+        heapq.heappush(self.top_k_ascending, val)
+        while len(self.top_k_ascending) > self.k:
+            heapq.heappop(self.top_k_ascending)
+        return self.top_k_ascending[0]
+```
+- [heappushpop](https://github.com/Hiroto-Iizuka/coding_practice/pull/8#discussion_r2650804578)を使う
+
+>heapq.heappushpop(heap, item)
+item を heap に push した後、pop を行って heap から最初の要素を返します。この一続きの動作を heappush() に引き続いて heappop() を別々に呼び出すよりも効率的に実行します。
+
+```py
+import heapq
+
+
+class KthLargest:
+    def __init__(self, k: int, nums: List[int]):
+        self.k = k
+        self.top_k_ascending = []
+        for n in nums:
+            self.add(n)
+
+    def add(self, val: int) -> int:
+        if len(self.top_k_ascending) < self.k:
+            heapq.heappush(self.top_k_ascending, val)
+        else:
+            heapq.heappushpop(self.top_k_ascending, val)
+        return self.top_k_ascending[0]
+```
