@@ -137,9 +137,11 @@ class Solution:
     def kSmallestPairs(self, nums1: List[int], nums2: List[int], k: int) -> List[List[int]]:
         smallest_pairs = []
         min_sum_candidates = []
+        # 各 nums1[i] と nums2[0] の組を初期候補として push
         for i in range(min(k, len(nums1))):
             heapq.heappush(min_sum_candidates, (nums1[i] + nums2[0], i, 0))
 
+        # 最小の組を取り出し、同じ nums1 の次候補を追加
         while min_sum_candidates and len(smallest_pairs) < k:
             _, nums1_index, nums2_index = heapq.heappop(min_sum_candidates)
             smallest_pairs.append([nums1[nums1_index], nums2[nums2_index]])
