@@ -41,7 +41,7 @@ class Solution:
   - 時間計算量: O(N^2)
   - 空間計算量: O(N)
 
-```
+```py
 import heapq
 
 class Solution:
@@ -65,7 +65,7 @@ class Solution:
 - heapを使わない回答が一番最初に浮かんだ
   - おそい。18ms
   - 計算量
-    - 時間: O(N^2) `for _ in range`の中で`max()`している
+    - 時間: O(Nk) `for _ in range`の中で`max()`している
     - 空間: 
 ```py
 class Solution:
@@ -111,6 +111,31 @@ class Solution:
 ```
 
 - https://docs.python.org/3.11/library/collections.html#collections.Counter.most_common を使えばすぐできそうだけど、問題の意図ではないと思った
+  - コードの中身自体は読んでおく
+  - あ、これもheapq.nlargest使っている
+  - 最終コードは結局これを実装しているってことかも
+  - これを実装してみるという趣旨の問題だったのかな
+
+```py
+    def most_common(self, n=None):
+        '''List the n most common elements and their counts from the most
+        common to the least.  If n is None, then list all element counts.
+
+        >>> Counter('abracadabra').most_common(3)
+        [('a', 5), ('b', 2), ('r', 2)]
+
+        '''
+        # Emulate Bag.sortedByCount from Smalltalk
+        if n is None:
+            return sorted(self.items(), key=_itemgetter(1), reverse=True)
+
+        # Lazy import to speedup Python startup time
+        global heapq
+        if heapq is None:
+            import heapq
+
+        return heapq.nlargest(n, self.items(), key=_itemgetter(1))
+``` 
 
 ## Step2
 
@@ -156,4 +181,49 @@ class Solution:
 
         nums_frequent_order = sorted(num_count, key=num_count.get, reverse=True)
         return nums_frequent_order[:k]
+```
+
+## Step3
+
+- heapを使ったパターンのレビューを反映してみる
+
+```py
+import heapq
+
+
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        frequency = []
+
+        for num in set(nums):
+            count = nums.count(num)
+            frequency.append((count, num))
+
+        heapq.heapify(frequency)
+
+        while len(frequency) > k:
+            heapq.heappop(frequency)
+
+        return [num for _, num in frequency]
+```
+
+- dictを使った方法をリファクタ、だいぶ簡潔で読みやすい
+  - `nlargest(n, iterable, key=None)`
+    - https://github.com/python/cpython/blob/3.14/Lib/heapq.py#L537
+    - https://docs.python.org/ja/3/library/heapq.html#heapq.nlargest
+    - iterableのデータセットのうち、最大値から降順にn個の値のリストを返す。まさに今回の要件を満たすメソッド
+  - dictの変数名をkey_to_value形式に変更
+
+```py
+import collections
+import heapq
+
+
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        num_to_frequency = collections.defaultdict(int)
+        for num in nums:
+            num_to_frequency[num] += 1
+        
+        return heapq.nlargest(k, num_to_frequency, key=num_to_frequency.get)
 ```
