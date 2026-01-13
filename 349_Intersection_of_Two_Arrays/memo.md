@@ -55,6 +55,7 @@ class Solution:
 ## Step2
 
 - intersection
+  - 共通部分（積集合）を取得
   - Pythonの組み込み関数なのでこれはさすがに出題意図に沿っていないか...？
 
 ```py
@@ -81,7 +82,7 @@ def intersectionWithoutSet(self, nums1: List[int], nums2: List[int]) -> List[int
             continue
         elif sorted1[i] > sorted2[j]:
             j += 1
-            continue
+
 
         common = sorted1[i]
         assert common == sorted2[j]
@@ -125,4 +126,17 @@ def intersection(self, nums1: List[int], nums2: List[int]) -> List[int]:
             break
 
     return common
+```
+
+## Step3
+
+- setのコストが高くなるので大きい配列はset化しないようにする
+
+```py
+class Solution:
+    def intersection(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        if len(nums1) <= len(nums2):
+            nums1, nums2 = nums2, nums1  # 小さい方をnums1にする
+
+        return list(set(nums1).intersection(nums2))
 ```
