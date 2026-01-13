@@ -1,6 +1,7 @@
 ## Step1
 
-- targetと現在の値との差分をdictに保持しておく
+- すでに登場した値(`num`)とそのインデックスをdictに保持
+  - ただし、結果を返すときはcomplement（`target - num`）を利用する
 - その差分が登場した時点でreturnを返す
 - 別のレビューでdictの命名規則は`key_to_value`がよいとご指摘いただいたので採用してみた（わかりやすい）
 - 計算量
@@ -25,3 +26,7 @@ class Solution:
 - `target - num`の変数名`complement`もいいかも
 - dictの命名`num_to_index`としている人が多そう。
   - たしかにこっちのほうがよさそう（意味がそのまま通る） 
+
+## Step3
+
+- 特に変更なし
