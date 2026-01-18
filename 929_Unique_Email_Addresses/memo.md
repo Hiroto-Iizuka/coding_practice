@@ -70,7 +70,7 @@ class Solution:
   - `*rest` tuple/list のアンパックにおいて、この形式の変数は余った要素を配列として受け取るらしい
   - `@@`になっている場合などのエラーハンドリング
 
-```
+```py
 class Solution:
     def numUniqueEmails(self, emails: List[str]) -> int:
         unique_emails = set()
@@ -81,6 +81,30 @@ class Solution:
                 raise ValueError(f"There are two or more @ in {email}")
 
             local_name_normalized = local_name.replace(".", "").split("+")[0]
+            unique_emails.add((local_name_normalized, domain_name))
+
+        return len(unique_emails)
+```
+
+## Step3
+
+- 実務上を考えると変数定義に型ヒントを入れて将来的なバグリスクを低減できるのは良いと思った
+- つい一行でまとめたくなってしまうが、local_name_normalizedのように分割してわかりやすいことを心がけたい
+- `splitmax=1`を入れてみた。`+`が複数ある場合を想定しているのだと思った。
+
+```py
+class Solution:
+    def numUniqueEmails(self, emails: List[str]) -> int:
+        unique_emails: set[tuple[str, str]] = set()
+
+        for email in emails:
+            split_result = email.split("@")
+            if len(split_result) != 2:
+                raise ValueError(f"email address '{email}' must contain only one @")
+            local_name, domain_name = split_result
+
+            local_name_deleted_dot = local_name.replace(".", "")
+            local_name_normalized = local_name_deleted_dot.split("+", maxsplit=1)[0]
             unique_emails.add((local_name_normalized, domain_name))
 
         return len(unique_emails)
