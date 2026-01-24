@@ -43,6 +43,7 @@ class Solution:
         cumsum_to_freq[0] = 1
         for num in nums:
             total += num
+            # 以下はcumsum_to_freq.get(total - k, 0)というようにも書ける
             if total - k in cumsum_to_freq:
                 count += cumsum_to_freq[total - k]
 
@@ -79,3 +80,34 @@ class Solution:
         return answer
 ```
 
+## Step3
+
+- 指摘いただいた箇所を反映、少し簡潔になった
+- https://github.com/Hiroto-Iizuka/coding_practice/pull/16#discussion_r2679850144
+  - 鉄道があって、各駅間ごとの標高差が与えられる。標高差がちょうどKであるようなすべての駅の組み合わせを列挙する。
+  - 以下のようになるらしい
+
+```py
+from typing import List
+from collections import defaultdict
+
+class Solution:
+    def findStationPairs(self, elevationDiffs: List[int], k: int) -> List[List[int]]:
+        result = []
+
+        elevations = [0]
+        for diff in elevationDiffs:
+            elevations.append(elevations[-1] + diff)
+        
+        elevation_map = defaultdict(list)
+        
+        for i, elev in enumerate(elevations):
+            target = elev - k
+            if target in elevation_map:
+                for j in elevation_map[target]:
+                    result.append([j, i])
+            
+            elevation_map[elev].append(i)
+        
+        return result
+```
