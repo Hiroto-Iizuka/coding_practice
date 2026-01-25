@@ -95,11 +95,15 @@ def bfs(grid, i, j):
             - bfsまたはdfsで行う
             - `'1'`を確認したら`'0'`に変える
 
-### 再帰/bfs
+### 再帰/dfs
 
 - dfsメソッドをclassの内部に入れた
 - gridを扱う時、行: r, 列: cとするとわかりやすくなった
 - dfs内で使う入力値gridを変えずにvisitedという変数で管理するようにした
+- 深い再帰になるとスタックオーバーフローのリスクがある
+    - https://github.com/Hiroto-Iizuka/coding_practice/pull/17/changes#r2716085615
+    - Pythonの再帰上限のデフォルトは1000回
+    - `1 <= m, n <= 300` より、最大で 9 万回の再帰呼び出しが行われる
 
 ```py
 class Solution:
@@ -129,6 +133,10 @@ class Solution:
         self.dfs(visited, r, c - 1)
 ```                
 ### bfs
+
+- 安全性の観点ではbfsの方がよいかも？
+    - スタックオーバーフローの心配はない
+    - メモリ使用量は制御し易い
 
 ```py
 from collections import deque
