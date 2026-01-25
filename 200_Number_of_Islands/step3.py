@@ -3,9 +3,6 @@ from collections import deque
 
 class Solution:
     def numIslands(self, grid: List[List[str]]) -> int:
-        if not grid:
-            return 0
-        
         count = 0
         
         for r in range(len(grid)):
@@ -33,4 +30,3 @@ class Solution:
                 if 0 <= n_row < len(visited) and 0 <= n_col < len(visited[0]) and visited[n_row][n_col] == '1':
                     queue_to_visit.append((n_row, n_col))
                     visited[n_row][n_col] = '0' 
-                    

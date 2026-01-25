@@ -87,6 +87,14 @@ def bfs(grid, i, j):
 
 ## Step3
 
+- 流れ
+    - 全体を見て、陸地（`'1'`）を見つける
+    - 見つけたら
+        - countを`+1`する
+        - 探索メソッドを実行する
+            - bfsまたはdfsで行う
+            - `'1'`を確認したら`'0'`に変える
+
 ### 再帰/bfs
 
 - dfsメソッドをclassの内部に入れた
@@ -128,11 +136,7 @@ from collections import deque
 
 class Solution:
     def numIslands(self, grid: List[List[str]]) -> int:
-        if not grid:
-            return 0
-        
         count = 0
-        
         for r in range(len(grid)):
             for c in range(len(grid[0])):
                 if grid[r][c] == '1':
