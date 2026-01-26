@@ -13,24 +13,24 @@ from collections import deque
 
 class Solution:
     def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
-        largest_area = 0
+        max_area = 0
         for r in range(len(grid)):
             for c in range(len(grid[0])):
                 if grid[r][c] == 1:
                     current_area = self.bfs(grid, r, c)
-                    largest_area = max(largest_area, current_area)
+                    max_area = max(max_area, current_area)
 
-        return largest_area
+        return max_area
 
     def bfs(self, grid, r, c):
-        queue_to_visit = deque()
-        queue_to_visit.append((r, c))
+        frontier = deque()
+        frontier.append((r, c))
         visited = grid
         area = 1
         visited[r][c] = 0
 
-        while queue_to_visit:
-            row, col = queue_to_visit.popleft()
+        while frontier:
+            row, col = frontier.popleft()
 
             directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
 
@@ -38,7 +38,7 @@ class Solution:
                 n_row, n_col = row + d_row, col + d_col
 
                 if 0 <= n_row < len(visited) and 0 <= n_col < len(visited[0]) and visited[n_row][n_col] == 1:
-                    queue_to_visit.append((n_row, n_col))
+                    frontier.append((n_row, n_col))
                     area += 1
                     visited[n_row][n_col] = 0
 
@@ -54,15 +54,15 @@ class Solution:
 ```py
 class Solution:
     def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
-        largest_area = 0
+        max_area = 0
         area = 0
         for r in range(len(grid)):
             for c in range(len(grid[0])):
                 if grid[r][c] == 1:
                     current_area = self.dfs(grid, r, c)
-                    largest_area = max(largest_area, current_area)
+                    max_area = max(max_area, current_area)
 
-        return largest_area
+        return max_area
 
     def dfs(self, grid, r, c):
         visited = grid
@@ -96,24 +96,24 @@ from collections import deque
 
 class Solution:
     def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
-        largest_area = 0
+        max_area = 0
         for r in range(len(grid)):
             for c in range(len(grid[0])):
                 if grid[r][c] == 1:
                     current_area = self.explore_island(grid, r, c)
-                    largest_area = max(largest_area, current_area)
+                    max_area = max(max_area, current_area)
 
-        return largest_area
+        return max_area
 
     def explore_island(self, grid, r, c):
-        queue_to_visit = deque()
-        queue_to_visit.append((r, c))
+        frontier = deque()
+        frontier.append((r, c))
         visited = grid
         area = 1
         visited[r][c] = 0
 
-        while queue_to_visit:
-            row, col = queue_to_visit.popleft()
+        while frontier:
+            row, col = frontier.popleft()
 
             directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
 
@@ -121,7 +121,7 @@ class Solution:
                 n_row, n_col = row + d_row, col + d_col
 
                 if 0 <= n_row < len(visited) and 0 <= n_col < len(visited[0]) and visited[n_row][n_col] == 1:
-                    queue_to_visit.append((n_row, n_col))
+                    frontier.append((n_row, n_col))
                     area += 1
                     visited[n_row][n_col] = 0
 
@@ -133,15 +133,15 @@ class Solution:
 ```py
 class Solution:
     def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
-        largest_area = 0
+        max_area = 0
         area = 0
         for r in range(len(grid)):
             for c in range(len(grid[0])):
                 if grid[r][c] == 1:
                     current_area = self.explore_island(grid, r, c)
-                    largest_area = max(largest_area, current_area)
+                    max_area = max(max_area, current_area)
 
-        return largest_area
+        return max_area
 
     def explore_island(self, grid, r, c):
         visited = grid
@@ -159,5 +159,84 @@ class Solution:
         area += self.explore_island(visited, r, c + 1)
         area += self.explore_island(visited, r, c - 1)
 
+        return area
+```
+
+## Step3
+
+### BFS
+
+- `visited = grid`は参照をコピーしているだけだったので、新しく同じ形のgridを作ることで対応するようだ
+- `visited`の初期化、`grid, visited`の二重チェックによって重くなるかも？
+
+```py
+from collections import deque
+
+
+class Solution:
+    def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
+        max_area = 0
+        for r in range(len(grid)):
+            for c in range(len(grid[0])):
+                if grid[r][c] == 1:
+                    area = self.explore_island(grid, r, c)
+                    max_area = max(max_area, area)
+
+        return max_area
+
+    def explore_island(self, grid, r, c):
+        frontier = deque()
+        frontier.append((r, c))
+        visited = [[False] * len(grid[0]) for _ in range(len(grid))]
+        area = 1
+        visited[r][c] = 0
+
+        while frontier:
+            row, col = frontier.popleft()
+
+            directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+
+            for d_row, d_col in directions:
+                n_row, n_col = row + d_row, col + d_col
+
+                if 0 <= n_row < len(visited) and 0 <= n_col < len(visited[0]) and visited[n_row][n_col] == 1:
+                    frontier.append((n_row, n_col))
+                    area += 1
+                    visited[n_row][n_col] = 0
+
+        return area
+```
+
+### DFS
+
+```py
+class Solution:
+    def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
+        max_area = 0
+        visited = [[False] * len(grid[0]) for _ in range(len(grid))]
+        
+        for r in range(len(grid)):
+            for c in range(len(grid[0])):
+                if grid[r][c] == 1 and not visited[r][c]:
+                    area = self.explore_island(grid, visited, r, c)
+                    max_area = max(max_area, area)
+        
+        return max_area
+
+    def explore_island(self, grid, visited, r, c):
+        if not 0 <= r < len(grid) or not 0 <= c < len(grid[0]):
+            return 0
+        
+        if grid[r][c] == 0 or visited[r][c]:
+            return 0
+        
+        visited[r][c] = True
+        
+        area = 1
+        area += self.explore_island(grid, visited, r + 1, c)
+        area += self.explore_island(grid, visited, r - 1, c)
+        area += self.explore_island(grid, visited, r, c + 1)
+        area += self.explore_island(grid, visited, r, c - 1)
+        
         return area
 ```
