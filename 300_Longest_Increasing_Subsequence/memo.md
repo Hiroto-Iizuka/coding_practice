@@ -39,7 +39,7 @@ class Solution:
 
 貪欲など、いろいろ書いているので参考までに。
 
-### 
+### コードの修正
 
 ```py
 class Solution:
