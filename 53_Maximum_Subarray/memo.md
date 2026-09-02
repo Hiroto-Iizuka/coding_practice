@@ -35,6 +35,10 @@ SWEの常識に入る解き方を調べてみる
 このあたりがSWEの常識的な解き方だろうか？
 累積和を使っているけど、本質的にはKadaneと同じような気がする
 
+- https://github.com/Manato110/LeetCode-arai60/pull/33/changes#diff-95305de1e9bf283c3d5bc14487393733af825dba9d588055983a75d4808d3ccaR113-R120
+
+分割統地について
+
 ### 最終的な自分のコード（修正があれば反映）
 
 ```py
