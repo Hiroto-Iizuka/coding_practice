@@ -69,7 +69,7 @@ class Solution:
     def uniquePathsWithObstacles(self, obstacleGrid: List[List[int]]) -> int:
         REACHABLE, BLOCKED = 1, 0
 
-        row, column = len(obstacleGrid), len(obstacleGrid[0])
+        num_rows, num_columns = len(obstacleGrid), len(obstacleGrid[0])
         nums_path = []
         for j, num in enumerate(obstacleGrid[0]):
             if num == 0 and (j == 0 or nums_path[j - 1] == REACHABLE):
